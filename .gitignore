@@ -1,0 +1,26 @@
+# 个人简历与真实数据（隐私，绝不上传）
+sample_data/syq_resume.html
+sample_data/syq_resume.pdf
+sample_data/syq_profile_full.yaml
+sample_data/syq_output_deepseek_full.txt
+sample_data/deepseek_jd.txt
+
+# render_pdf.py 内嵌了真实简历全文、且已被 html2pdf.py 取代，暂不上传
+render_pdf.py
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# 系统 / 编辑器
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# 环境与密钥
+.env
+*.key

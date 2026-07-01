@@ -1,0 +1,28 @@
+# 匿名样例档案（仓库自带的演示数据，非真实简历）
+# 真实档案格式完全一样，把 original_text 换成你自己的经历原话即可。
+
+bg_type: product          # product | tech，影响模块优先级
+
+jd: |
+  岗位：AI 应用工程师
+  职责：设计并实现 LLM 驱动的产品功能；构建 RAG / agent workflow。
+  要求：熟悉 Python 与至少一个 agent 框架；有 LLM 应用上线经验。
+
+experiences:
+  - id: exp0
+    type: work
+    role: 后端工程师
+    org: 某公司
+    dates: 2023 至今
+    original_text: |
+      负责订单系统重构，把单体拆成 4 个微服务，接口平均响应时间从 800ms 降到 120ms。
+      主导接入 Elasticsearch 做商品搜索，搜索准确率提升 30%，日均查询量 200 万。
+
+  - id: exp1
+    type: practice
+    role: 个人项目 · 文档问答机器人
+    org: 个人
+    dates: 2024
+    original_text: |
+      用 LangChain + 本地 embedding 搭了一个文档问答机器人，支持多轮追问和引用溯源，
+      接入公司内部 wiki 后，客服自助解决率提升 18%。

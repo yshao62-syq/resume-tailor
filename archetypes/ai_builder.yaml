@@ -1,0 +1,34 @@
+name: ai_builder
+description: AI builder（超级个体）简历 preset。懂产品的 RD / 懂技术的 PM 通用。
+# 工具本身通用；这个文件是可替换的领域知识。加别的职业 = 加个 yaml。
+
+archetypes:
+  ai_builder_product:
+    label: "懂技术的 PM / 产品向 AI builder"
+    module_priority: [positioning, signature_projects, builds_demos, agent_llm_stack, community, education]
+  ai_builder_tech:
+    label: "懂产品的 RD / 技术向 AI builder"
+    module_priority: [positioning, signature_projects, agent_llm_stack, builds_demos, community, education]
+
+module_catalog:
+  positioning: "一句定位：候选人是什么样的 builder、最匹配岗位的哪一点"
+  signature_projects: "签名项目：0→1 的 AI native 产品，带量化 impact（延迟/成本/准确率/采用量）"
+  builds_demos: "Builds/Demos：可点链接、GitHub、live demo——build 的证据"
+  agent_llm_stack: "Agent/LLM 技术栈：模型、agent 编排框架（如 LangGraph）、RAG、evals、成本把控"
+  community: "社区影响力：build-in-public、开源贡献、分享、粉丝量"
+  education: "教育背景"
+
+hit_rate_drivers:
+  - "0→1 AI native 产品经历（真 ship 过、端到端）"
+  - "可量化的 impact，不是'做了 X'而是'X 带来 Y 指标'"
+  - "build 的证据：可点链接/GitHub/demo"
+  - "agentic workflow 经验（多步 agent、工具调用、evals）"
+  - "building in public / 社区影响力"
+  - "review/edit AI 生成代码的能力"
+
+selection_guidance: |
+  按 archetype_hint 选 module_priority。
+  signature_projects 永远靠前（命中率最高）。
+  候选人有可点链接/作品就上 builds_demos。
+  community 只在真有料（粉丝/OSS/分享）时上，没料就省略。
+  positioning 要具体到"什么样的 builder + 最匹配岗位哪一点"，不要空话。

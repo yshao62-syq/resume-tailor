@@ -1,0 +1,11 @@
+岗位：AI 应用工程师
+
+职责：
+- 设计并实现 LLM 驱动的产品功能
+- 构建 RAG / agent workflow，做意图识别与工具调用
+- 建立离线评测闭环，保障线上效果与稳定性
+
+要求：
+- 熟悉 Python，至少一个 agent 编排框架（LangGraph / LangChain 等）
+- 有 LLM 应用从 0 到 1 上线经验，关注成本与延迟
+- 能做 eval、能 debug badcase
