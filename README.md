@@ -8,6 +8,7 @@
 
 - **Phase 0 · 文本管线（done）**：YAML 档案进、定制文本出。fact-locker 锁事实 → JD 分析 → 模块选择 → scope-bound 改写 → verifier 审核 + 自动修复闭环。每条 bullet 都挂回真实经历原话。
 - **Phase 1 · 渲染（done）**：contenteditable HTML 活文档（浏览器打开点哪改哪，Cmd+P 直接导 PDF）+ `html2pdf.py`（Playwright 无头 Chromium 出 A4 PDF，Maple Mono 字体 base64 内联）。屏幕视图就是 A4 真实尺寸（WYSIWYG），所见即所印。
+- **对话式 agent（done）**：三个模块落地——提问式挖掘 `miner.py`（从 JD 视角追问补材料）、narrative synthesis `narrative.py`（推断职业主线 + heavy/light/drop 取舍）、面试官视角 stress-test `stress_test.py`（debate 求逻辑严密，抓过度拔高 / 概念偷换 / 因果跳跃）。`agent.py` 串成"理解全局 → 再隔离动笔"两段式对话流。
 
 ### 跑起来
 
@@ -29,6 +30,13 @@ HTML 编辑 → PDF：
 
 ```bash
 python html2pdf.py [input.html] [output.pdf]
+```
+
+对话式 agent（挖掘 + 主线确认 + 改写 + 压测）：
+
+```bash
+python agent.py sample_data/example_profile.yaml --jd sample_data/example_jd.txt
+# 非交互（自动采纳推断主线，测试 / CI 用）：加 --auto
 ```
 
 ### 依赖
@@ -81,8 +89,12 @@ resume-tailor/
   module_selector.py  工位3a：按 preset 选模块
   tailor.py           工位3b：scope-bound 改写 + 自动修复
   verifier.py         工位3c：抓腾挪 / 编造
-  pipeline.py         编排 + 组装简历文本 / 报告
+  pipeline.py         编排 + 组装简历文本 / 报告（含 stress-test）
   main.py             CLI（文本管线）
+  agent.py            对话式 agent CLI（理解全局 → 再隔离动笔）
+  miner.py            提问式挖掘：JD 视角追问补材料
+  narrative.py        narrative synthesis：推断主线 + heavy/light/drop 取舍
+  stress_test.py      面试官视角 stress-test：debate 求逻辑严密
   html2pdf.py         HTML → PDF 渲染器（Playwright + base64 内联 Maple Mono）
   archetypes/
     ai_builder.yaml   AI builder preset（模块目录 / 命中率 / 选模块指引）
@@ -99,16 +111,17 @@ resume-tailor/
 
 - **Phase 0（done）**：文本管线 + 防幻觉架构（scope-bound + verifier + fact-locker + 自动修复闭环）。在真实简历 11 段经历上压测：0 跨项目腾挪、0 凭空编造、0 空产出。
 - **Phase 1（done）**：HTML contenteditable 活文档 + `html2pdf.py` + WYSIWYG A4 渲染。解决了 headless Chromium 不加载系统字体（file:// / page.route 均无效，最终用 base64 data: URL 内联 Regular+Italic 两字重）和"屏幕宽度 ≠ 打印宽度"（屏幕 `.page` 设成真 A4 尺寸，所见即所印）两个坑。
+- **对话式 agent（done）**：miner + narrative + stress-test 三模块落地，`agent.py` 串成"理解全局（提问式挖掘 + 主线确认）→ 再隔离动笔（按 heavy/light/drop 改写 + 审核 + 压测）"。example 数据验证：miner 生成 JD 针对性追问、narrative 推断主线 + 取舍、stress-test 抓出过度拔高 / 概念偷换 / 因果跳跃等真问题。
 - **踩过并修好的坑**：GLM 偶发内容安全拦截 `[1301]`（`chat` 里对内容过滤类错误重试）、偶发坏 JSON（换 json-repair + schema 感知修复兜底）、改写偶发空 bullet（pipeline 加空值保护）、模型名带 router 标记被 API 拒（config 里 sanitize）。
 - **核心设计思想**：两层模型——理解层（全真深度，含负面）供职业主线 / 面试 prep / 压力面试；简历表层从面试官提问视角出发，把每行写成经得起追问的论点。原则：**每一行简历都是未来的一个面试问题**。
 
 ### 之后计划
 
-短期（把简历里已 claim 的能力真做出来）：
+短期（打磨对话式 agent）：
 
-- **提问式挖掘**：没材料时按 JD 对话式追问，把"用户不会主动讲"的信息挖出来。
-- **narrative synthesis**：主动推断职业主线（用户不讲），推断后与用户确认 + JD 取舍。
-- **面试官视角 stress-test**：debate-based verifier，对每条 claim 逐条拷问、力求逻辑严密自洽，把表层 claim 与理解层不一致的地方提前暴露。
+- 挖掘到的回答目前作为独立"挖掘补全"经历入库；后续智能归并到最相关的原有经历。
+- narrative 的 heavy/light/drop 目前只驱动 bullet 数量与取舍；后续让定位也参与 module_selector 的模块取舍。
+- 压力测试发现的"defend 不住"claim，后续接回改写器自动降措辞（闭环，类似 verifier 的自动修复）。
 
 中期：
 

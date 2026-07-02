@@ -20,15 +20,18 @@ SYS = (
 )
 
 
-def tailor_experience(client: LLMClient, exp: Experience, jd: JDAnalysis) -> RewriteResult:
+def tailor_experience(
+    client: LLMClient, exp: Experience, jd: JDAnalysis, max_bullets: int | None = None
+) -> RewriteResult:
     facts_block = "\n".join(f"- {f.fact}" for f in exp.facts) or "(无)"
     keywords = jd.required_skills + jd.required_keywords
+    extra = f"\n本次只输出 {max_bullets} 条精炼 bullet（一句带过）。" if max_bullets else ""
     user = (
         f"经历: {exp.role} @ {exp.org} ({exp.dates})\n\n"
         "【这条经历锁定的原子事实，你只能用这些，不许用别的】:\n"
         f"{facts_block}\n\n"
         f"JD 命中关键词（往这些角度靠）: {keywords}\n\n"
-        f"把它改写成简历 bullet。experience_id={exp.id}"
+        f"把它改写成简历 bullet。experience_id={exp.id}{extra}"
     )
     return client.structured(SYS, user, RewriteResult, temperature=0.3)
 
